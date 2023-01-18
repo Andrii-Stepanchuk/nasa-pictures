@@ -10,7 +10,9 @@ import ua.stepanchuk.nasa.dto.response.SuccessResponse;
 import ua.stepanchuk.nasa.service.NasaClientService;
 import ua.stepanchuk.nasa.service.NasaPictureService;
 
+import java.util.Formatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/pictures")
@@ -37,13 +39,33 @@ public class NasaPictureController {
 
     @PostMapping
     public SuccessResponse submitForCheckPicture(@RequestBody PictureSender pictureSender) {
-        System.out.println(pictureSender);
         return nasaPictureService.checkPicture(pictureSender);
     }
 
-    @GetMapping("/users")
+    @GetMapping()
     public List<Picture> getAllPictures() {
         return nasaClientService.getAllPictures();
+    }
+
+    @GetMapping("/view-largest")
+    public String ViewLargestPicture() {
+        Picture picture = nasaClientService.getLargestPicture();
+        return String.format("<img src=\"%s\">", picture.getUrl());
+    }
+
+    @GetMapping("/view-smallest")
+    public String ViewSmallestPicture() {
+        Picture picture = nasaClientService.getSmallestPicture();
+        return String.format("<img src=\"%s\">", picture.getUrl());
+    }
+
+    @GetMapping("/view-all")
+    public String ViewAllPicture() {
+        List<Picture> pictures = nasaClientService.getAllPictures();
+        return pictures.stream()
+                .map(Picture::getUrl)
+                .map(picture -> String.format("<img src=\"%s\"><br>\n", picture))
+                .collect(Collectors.joining());
     }
 
 }
