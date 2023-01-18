@@ -10,12 +10,11 @@ import ua.stepanchuk.nasa.dto.response.SuccessResponse;
 import ua.stepanchuk.nasa.service.NasaClientService;
 import ua.stepanchuk.nasa.service.NasaPictureService;
 
-import java.util.Formatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/pictures")
+@RequestMapping("/nasa/pictures")
 @RequiredArgsConstructor
 public class NasaPictureController {
 
